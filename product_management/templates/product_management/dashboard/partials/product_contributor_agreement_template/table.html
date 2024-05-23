@@ -1,7 +1,7 @@
 <table class="min-w-full divide-y divide-gray-300">
     <thead class="bg-gray-50">
         <tr>
-            <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Content</th>
+            <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Title</th>
             <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Effective from</th>
             <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Created By</th>
             <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Created At</th>
@@ -14,9 +14,7 @@
         {% for contributor_agreement_template in contributor_agreement_templates %}
         <tr>
             <td class="max-w-xs px-3 py-4 text-sm text-gray-500">
-                {% autoescape off %}
-                {{ contributor_agreement_template.content|truncatechars_html(20) }}
-                {% endautoescape %}
+                {{ contributor_agreement_template.title }}
             </td>
             <td class="max-w-xs px-3 py-4 text-sm text-gray-500">
                 {{ contributor_agreement_template.effective_date }}
@@ -32,9 +30,9 @@
                     class="font-medium text-sm text-blue-600 hover:underline">
                     View
                 </a>
-                <a href="#" class="font-medium text-sm text-blue-600 hover:underline ml-2">
+                <!-- <a href="#" class="font-medium text-sm text-blue-600 hover:underline ml-2">
                     Edit
-                </a>
+                </a> -->
             </td>
         </tr>
         {% endfor %}
