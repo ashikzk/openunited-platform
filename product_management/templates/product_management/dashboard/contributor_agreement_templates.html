@@ -9,9 +9,9 @@
     </a>
 </div>
 
-{% if contribution_agreements %}
-    {% include 'product_management/dashboard/partials/contribution_agreement/search_area.html' %}
-    {% include 'product_management/dashboard/partials/contribution_agreement/table.html' %}
+{% if contributor_agreement_templates %}
+    {% include 'product_management/dashboard/partials/product_contributor_agreement_template/search_area.html' %}
+    {% include 'product_management/dashboard/partials/product_contributor_agreement_template/table.html' %}
 {% else %}
     <p class="mt-5 italic ml-2">Currently, there are no contribution agreements for this product.</p>
 {% endif  %}

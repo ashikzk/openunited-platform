@@ -11,24 +11,24 @@
         </tr>
     </thead>
     <tbody class="divide-y divide-gray-200 bg-white">
-        {% for contribution_agreement in contribution_agreements %}
+        {% for contributor_agreement_template in contributor_agreement_templates %}
         <tr>
             <td class="max-w-xs px-3 py-4 text-sm text-gray-500">
                 {% autoescape off %}
-                {{ contribution_agreement.content|truncatechars_html(20) }}
+                {{ contributor_agreement_template.content|truncatechars_html(20) }}
                 {% endautoescape %}
             </td>
             <td class="max-w-xs px-3 py-4 text-sm text-gray-500">
-                {{ contribution_agreement.effective_date }}
+                {{ contributor_agreement_template.effective_date }}
             </td>
             <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                {{ contribution_agreement.created_by }}
+                {{ contributor_agreement_template.created_by }}
             </td>
             <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                {{ contribution_agreement.created_at|date }}
+                {{ contributor_agreement_template.created_at|date }}
             </td>
             <td>
-                <a href="{{ url('contribution-agreement-detail', args=(product.slug, contribution_agreement.id,)) }}" 
+                <a href="{{ url('contribution-agreement-detail', args=(product.slug, contributor_agreement_template.id,)) }}" 
                     class="font-medium text-sm text-blue-600 hover:underline">
                     View
                 </a>

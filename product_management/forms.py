@@ -21,7 +21,7 @@ from .models import (
     ProductArea,
     ProductAreaAttachment,
     BountyAttachment,
-    ContributionAgreement,
+    ProductContributorAgreementTemplate,
 )
 from django import forms
 from django.forms import inlineformset_factory
@@ -659,13 +659,13 @@ class ProductAreaForm1(forms.ModelForm):
         }
 
 
-class ContributionAgreementForm(forms.ModelForm):
+class ProductContributorAgreementTemplateForm(forms.ModelForm):
     product = forms.ModelChoiceField(
         empty_label="Select a product",
         queryset=Product.objects.all(),
         widget=forms.Select(
             attrs={
-                "class": "block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6",
+                "class": "block w-1/2 rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6",
             }
         ),
     )
@@ -682,11 +682,17 @@ class ContributionAgreementForm(forms.ModelForm):
             self.fields["product"].initial = queryset.first()
 
     class Meta:
-        model = ContributionAgreement
+        model = ProductContributorAgreementTemplate
         fields = "__all__"
         exclude = ["created_by"]
 
         widgets = {
+            "title": forms.TextInput(
+                attrs={
+                    "class": "pt-2 px-4 pb-3 w-full text-sm text-black border border-solid border-[#D9D9D9] focus:outline-none rounded-sm",
+                    "placeholder": "Agreement title",
+                }
+            ),
             "content": TinyMCE(
                 attrs={
                     "class": "pt-2 px-4 pb-3 w-full text-sm text-black border border-solid border-[#D9D9D9] focus:outline-none rounded-sm",
@@ -698,7 +704,7 @@ class ContributionAgreementForm(forms.ModelForm):
             "effective_date": forms.DateInput(
                 attrs={
                     "type": "date",
-                    "class": "pt-2 px-4 pb-3 min-h-[104px] w-full text-sm text-black border border-solid border-[#D9D9D9] focus:outline-none rounded-sm",
+                    "class": "pt-2 px-4 pb-3 min-h-[104px] w-1/3 text-sm text-black border border-solid border-[#D9D9D9] focus:outline-none rounded-sm",
                     "placeholder": "Select effective date",
                 }
             ),

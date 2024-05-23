@@ -22,11 +22,28 @@
                     {% endif %}
                 </div>
 
-                <div class="col-span-4">
+                <div class="col-span-full">
+                    <label for="{{ form.title.id_for_label }}"
+                        class="block text-sm font-medium leading-6 text-gray-900">{{ form.title.label }}</label>
+                    <div class="mt-2">
+                        {{ form.title }}
+                    </div>
+                </div>
+
+                <div class="col-span-full">
                     <label for="{{ form.product.id_for_label }}"
                         class="block text-sm font-medium leading-6 text-gray-900">{{ form.product.label }}</label>
                     <div class="mt-2">
                         {{ form.product }}
+                    </div>
+                </div>
+
+                
+                <div class="col-span-full">
+                    <label for="{{ form.effective_date.id_for_label }}"
+                        class="block text-sm font-medium leading-6 text-gray-900">{{ form.effective_date.label }}</label>
+                    <div class="mt-2">
+                        {{ form.effective_date }}
                     </div>
                 </div>
 
@@ -37,15 +54,6 @@
                         {{ form.content }}
                     </div>
                 </div>
-
-                <div class="col-span-2">
-                    <label for="{{ form.effective_date.id_for_label }}"
-                        class="block text-sm font-medium leading-6 text-gray-900">{{ form.effective_date.label }}</label>
-                    <div class="mt-2">
-                        {{ form.effective_date }}
-                    </div>
-                </div>
-
             </div>
         </div>
 
