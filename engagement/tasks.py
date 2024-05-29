@@ -1,8 +1,8 @@
 from celery import shared_task
 from celery.utils.log import get_task_logger
-from openunited.utils import send_sendgrid_email
 
 from engagement.models import EmailNotification, Notification
+from openunited.utils import send_sendgrid_email
 from talent.models import Person
 
 

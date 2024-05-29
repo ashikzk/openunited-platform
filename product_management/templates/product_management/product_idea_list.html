@@ -25,7 +25,7 @@
                 <input type="checkbox" class="heart__checkbox"
                 {% if idea.user_has_voted %} checked {% endif %}
                 hx-post="{{ url('cast-vote-for-idea', args=(idea.idea_obj.pk,)) }}"
-                hx-trigger="click" 
+                hx-trigger="click"
                 hx-swap="innerHTML"
                 hx-target="#vote-count-{{idea.idea_obj.pk}}"/>
                 <div class="heart__icon"></div>
@@ -34,7 +34,7 @@
                 <span>Votes: </span>
                 <span id="vote-count-{{ idea.idea_obj.pk }}">{{ idea.num_votes }}</span>
             </div>
-            
+
         </div>
         {% endif %}
     </li>

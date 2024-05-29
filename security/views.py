@@ -1,30 +1,33 @@
-from django.conf import settings
 from random import randrange
-from django.shortcuts import render, redirect
-from django.urls import reverse
-from django.core.mail import send_mail
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
-from django.views.generic import TemplateView
-from django.utils.translation import gettext_lazy as _
-from formtools.wizard.views import SessionWizardView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import (
     LogoutView,
-    PasswordResetView,
-    PasswordResetDoneView,
-    PasswordResetConfirmView,
     PasswordResetCompleteView,
+    PasswordResetConfirmView,
+    PasswordResetDoneView,
+    PasswordResetView,
 )
+from django.core.mail import send_mail
+from django.shortcuts import redirect, render
+from django.urls import reverse
+from django.utils.translation import gettext_lazy as _
+from django.views.generic import TemplateView
 
-from .forms import PasswordResetForm, SetPasswordForm
-from .models import User
+from formtools.wizard.views import SessionWizardView
+
+from talent.models import Person
+
 from .forms import (
+    PasswordResetForm,
+    SetPasswordForm,
     SignInForm,
     SignUpStepOneForm,
-    SignUpStepTwoForm,
     SignUpStepThreeForm,
+    SignUpStepTwoForm,
 )
-from talent.models import Person
 from .models import User
 from .services import UserService
 

@@ -1,13 +1,13 @@
-from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-
 from openunited.mixins import TimeStampMixin, UUIDMixin
+from product_management.models import Idea, Product
 from talent.models import Person
-from product_management.models import Product, Idea
-from .managers import UserManager
+
 from .constants import DEFAULT_LOGIN_ATTEMPT_BUDGET
+from .managers import UserManager
 
 
 # This model will be used for advanced authentication methods

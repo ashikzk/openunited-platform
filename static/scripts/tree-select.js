@@ -37,11 +37,11 @@ async function updateSkillAndExpertiseTable(event) {
 
             response.forEach(pair => {
                 const newRow = tbody.insertRow();
-                
+
                 const skillCell = newRow.insertCell(0);
                 skillCell.textContent = pair.skill;
                 skillCell.classList.add("py-3.5", "pl-4", "pr-3", "text-left", "text-sm", "font-semibold", "text-gray-900", "sm:pl-0");
-                
+
                 const expertiseCell = newRow.insertCell(1);
                 expertiseCell.textContent = pair.expertise;
                 expertiseCell.classList.add("py-3.5", "pl-4", "pr-3", "text-left", "text-sm", "font-semibold", "text-gray-900", "sm:pl-0");
@@ -67,7 +67,7 @@ function mapOptionsExpertiseToOptions(optionsExpertise) {
     optionsExpertise.forEach(expertiseOption => {
         const { id, name, parent_id } = expertiseOption;
         const newOption = { name, value: id, children: [] };
-        
+
         const parentOption = newOptions.find(option => option.value === parent_id);
         if (parentOption) {
             parentOption.children.push(newOption);

@@ -2,8 +2,8 @@ document.addEventListener('DOMContentLoaded', function() {
   const addButton = document.getElementById('add-website');
   const container = document.querySelector('.container-website');
 
-  if(addButton) { 
-    
+  if(addButton) {
+
     addButton.addEventListener('click', function() {
     const newRow = document.createElement('div');
     newRow.className = 'row-website flex flex-col md:flex-row md:items-center w-full space-y-4 md:space-y-0 md:space-x-6';
@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
           <div class="py-1.5 w-[68px] px-3 h-full rounded-l-sm bg-neutral-50 text-sm text-black/[0.85]
           shadow-[0px_-1px_0px_0px_#D9D9D9_inset,_0px_1px_0px_0px_#D9D9D9_inset,_1px_0px_0px_0px_#D9D9D9_inset]">http://</div>
           <input type="text" name="website" id="website" autocomplete="website"
-            class="block w-full h-full max-w-full rounded-r-sm shadow-none border border-solid border-[#D9D9D9] py-1.5 px-3 text-gray-900 text-sm ring-0 
+            class="block w-full h-full max-w-full rounded-r-sm shadow-none border border-solid border-[#D9D9D9] py-1.5 px-3 text-gray-900 text-sm ring-0
             placeholder:text-gray-400 focus:ring-0 focus-visible:outline-none sm:text-sm sm:leading-6 h-9"
             placeholder="janesmith">
         </div>

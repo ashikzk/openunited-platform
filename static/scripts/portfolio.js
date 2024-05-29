@@ -14,20 +14,20 @@ if (btnJobsMore) {
       btnJobsMore.classList.remove('show');
       btnJobsMoreText.innerHTML = 'Show more';
       btnJobsMoreIcon.classList.remove('rotate-180');
-  
+
       jobsListItems.forEach((item, i) => {
-        
+
         if (i !== 0 && i !== 1) {
           item.classList.add('hidden');
         }
       });
-      
+
     } else {
 
       btnJobsMore.classList.add('show');
       btnJobsMoreText.innerHTML = 'Show less';
       btnJobsMoreIcon.classList.add('rotate-180');
-  
+
       jobsListItems.forEach((item) => {
         item.classList.remove('hidden');
       });

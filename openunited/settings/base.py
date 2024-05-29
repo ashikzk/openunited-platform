@@ -1,6 +1,7 @@
 import os
-import sentry_sdk
 from pathlib import Path
+
+import sentry_sdk
 from dotenv import load_dotenv
 
 DEBUG = True

@@ -1,30 +1,31 @@
 import json
 from datetime import date
+
 from django import forms
-from django.utils.translation import gettext_lazy as _
-from django.core.exceptions import ValidationError
-from django.urls import reverse_lazy
-from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.contenttypes.models import ContentType
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
+from django.forms import inlineformset_factory, modelformset_factory
+from django.urls import reverse_lazy
+from django.utils.translation import gettext_lazy as _
+
 from tinymce.widgets import TinyMCE
 
-from openunited.forms import MultipleFileField
 from commerce.models import Organisation
+from openunited.forms import MultipleFileField
 from talent.models import BountyClaim, Person
+
 from .models import (
-    Idea,
-    Bug,
-    Product,
-    Challenge,
     Bounty,
+    BountyAttachment,
+    Bug,
+    Challenge,
+    Idea,
     Initiative,
+    Product,
     ProductArea,
     ProductAreaAttachment,
-    BountyAttachment,
     ProductContributorAgreementTemplate,
 )
-from django import forms
-from django.forms import inlineformset_factory
 
 
 class DateInput(forms.DateInput):
@@ -305,15 +306,6 @@ class OrganisationForm(forms.ModelForm):
 
 
 class ChallengeForm(forms.ModelForm):
-    product = forms.ModelChoiceField(
-        empty_label="Select a product",
-        queryset=Product.objects.all(),
-        widget=forms.Select(
-            attrs={
-                "class": "block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6",
-            }
-        ),
-    )
     attachments = MultipleFileField(
         help_text="To select multiple files, hold 'Shift' key for Windows, 'Command' for MacOS",
         required=False,
@@ -321,22 +313,12 @@ class ChallengeForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        initial = kwargs.get("initial", None)
-        if initial:
-            product = initial.get("product", None)
-            if product:
-                self.fields["product"].empty_label = None
-                self.fields["product"].queryset = Product.objects.filter(
-                    id=product.id
-                )
-                self.fields["product"].initial = product
 
     class Meta:
         model = Challenge
         fields = [
             "title",
             "description",
-            "product",
             "reward_type",
             "priority",
             "status",
@@ -345,12 +327,12 @@ class ChallengeForm(forms.ModelForm):
         widgets = {
             "title": forms.TextInput(
                 attrs={
-                    "class": "block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    "class": "w-2/3 py-2 px-3 text-sm text-black border border-solid border-[#D9D9D9] rounded-sm focus:outline-none"
                 }
             ),
             "description": forms.Textarea(
                 attrs={
-                    "class": "pt-2 px-2 pb-3 min-h-[104px] w-full text-sm text-black border border-solid border-[#D9D9D9] focus:outline-none rounded-sm",
+                    "class": "pt-2 px-4 pb-3 min-h-[164px] w-full text-sm text-black border border-solid border-[#D9D9D9] focus:outline-none rounded-sm",
                 }
             ),
             "reward_type": forms.RadioSelect(
@@ -378,36 +360,15 @@ class ChallengeForm(forms.ModelForm):
 
 
 class BountyForm(forms.ModelForm):
-    challenge = forms.ModelChoiceField(
-        empty_label="Select a challenge",
-        queryset=Challenge.objects.filter(
-            status=Challenge.ChallengeStatus.ACTIVE
-        ),
-        widget=forms.Select(
-            attrs={
-                "class": "block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6",
-            }
-        ),
+    skill_id = forms.CharField(
+        widget=forms.HiddenInput(attrs={"id": "skill_id"})
     )
-    selected_skill_ids = forms.CharField(
-        widget=forms.HiddenInput(
-            attrs={"id": "selected-skills", "name": "selected-skills"}
-        )
-    )
-    selected_expertise_ids = forms.CharField(
-        widget=forms.HiddenInput(
-            attrs={"id": "selected-expert", "name": "selected-expert"}
-        )
+    expertise_ids = forms.CharField(
+        widget=forms.HiddenInput(attrs={"id": "expertise_ids"})
     )
 
     def __init__(self, *args, **kwargs):
-        self._challenge_queryset = kwargs.pop("challenge_queryset", None)
         super().__init__(*args, **kwargs)
-
-        if self._challenge_queryset:
-            self.fields["challenge"].queryset = self._challenge_queryset
-            self.fields["challenge"].initial = self._challenge_queryset.first()
-            self.fields["challenge"].empty_label = None
 
     def clean_selected_skill_ids(self):
         skill_id = self.cleaned_data.get("selected_skill_ids")
@@ -447,6 +408,7 @@ class BountyForm(forms.ModelForm):
             ),
             "status": forms.Select(
                 attrs={
+                    "id": "id_bounty_status",
                     "class": "block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6",
                 }
             ),
@@ -464,6 +426,16 @@ class BountyForm(forms.ModelForm):
         labels = {
             "is_active": "Is Active",
         }
+
+
+BountyFormset = modelformset_factory(
+    Bounty,
+    form=BountyForm,
+    fields=("title", "description", "points", "status", "is_active"),
+    extra=0,
+    can_delete=True,
+    can_delete_extra=True,
+)
 
 
 class BountyAttachmentForm(forms.ModelForm):

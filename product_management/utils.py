@@ -1,10 +1,11 @@
 import uuid
 
-from django.forms.models import model_to_dict
-from security.models import ProductRoleAssignment
-from django.http import JsonResponse
-from django.shortcuts import redirect, HttpResponseRedirect
 from django.contrib import messages
+from django.forms.models import model_to_dict
+from django.http import JsonResponse
+from django.shortcuts import HttpResponseRedirect, redirect
+
+from security.models import ProductRoleAssignment
 
 
 def get_person_data(person):

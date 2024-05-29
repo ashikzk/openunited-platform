@@ -11,5 +11,3 @@ psql -Atc "select tablename from pg_tables where schemaname='$SCHEMA'" $DB |\
   while read TBL; do
     psql -c "COPY $SCHEMA.$TBL TO '$EXPORT_DIR/$TBL.csv' DELIMITER ',' CSV HEADER;" $DB
   done
-
-

@@ -1,68 +1,59 @@
+import uuid
 from typing import Any, Dict
-from django.http import HttpRequest, HttpResponse, JsonResponse
-from django.shortcuts import redirect, HttpResponse, get_object_or_404
-from django.urls import reverse, reverse_lazy
-from django.db import models
-from django.db.models import Q, Sum, Case, Value, When
-from django.shortcuts import get_object_or_404, HttpResponseRedirect
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.utils.translation import gettext_lazy as _
-from django.shortcuts import render
-from django.contrib.contenttypes.models import ContentType
+
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import BadRequest, PermissionDenied
+from django.db import models
+from django.db.models import Case, Q, Sum, Value, When
+from django.http import HttpRequest, HttpResponse, JsonResponse
+from django.shortcuts import HttpResponse, HttpResponseRedirect, get_object_or_404, redirect, render
+from django.urls import reverse, reverse_lazy
+from django.utils.translation import gettext_lazy as _
 from django.views import View
-from django.views.generic import (
-    ListView,
-    TemplateView,
-    RedirectView,
-    CreateView,
-    UpdateView,
-    DeleteView,
-    DetailView,
-)
-from django.views import View
+from django.views.generic import CreateView, DeleteView, DetailView, ListView, RedirectView, TemplateView, UpdateView
+
+from commerce.models import Organisation
+from openunited.mixins import HTMXInlineFormValidationMixin
+from product_management import utils
+from security.models import IdeaVote, ProductRoleAssignment
+from talent.forms import PersonSkillFormSet
+from talent.models import BountyClaim, BountyDeliveryAttempt
+from talent.utils import serialize_expertise, serialize_skills
+from utility import utils as global_utils
 
 from .forms import (
-    BountyClaimForm,
-    IdeaForm,
-    BugForm,
-    ProductForm,
-    OrganisationForm,
-    ChallengeForm,
-    BountyForm,
-    InitiativeForm,
-    ProductAreaForm1,
-    ProductAreaForm,
-    ProductAreaAttachmentSet,
     BountyAttachmentFormSet,
+    BountyClaimForm,
+    BountyForm,
+    BountyFormset,
+    BugForm,
+    ChallengeForm,
+    IdeaForm,
+    InitiativeForm,
+    OrganisationForm,
+    ProductAreaAttachmentSet,
+    ProductAreaForm,
+    ProductAreaForm1,
     ProductContributorAgreementTemplateForm,
+    ProductForm,
 )
-from talent.models import BountyClaim, BountyDeliveryAttempt
 from .models import (
-    Challenge,
-    Product,
-    Initiative,
-    Bounty,
-    ProductArea,
-    Idea,
-    Bug,
-    Skill,
-    Expertise,
     Attachment,
+    Bounty,
     BountyAttachment,
+    Bug,
+    Challenge,
+    Expertise,
+    Idea,
+    Initiative,
+    Product,
+    ProductArea,
     ProductContributorAgreementTemplate,
+    Skill,
 )
-from commerce.models import Organisation
-from security.models import ProductRoleAssignment, IdeaVote
-from openunited.mixins import HTMXInlineFormValidationMixin
-from django.http import JsonResponse
-
-from product_management import utils
-from utility import utils as global_utils
-import uuid
-from django.http import HttpResponse
-from django.contrib.auth.decorators import login_required
 
 
 class ProductListView(ListView):
@@ -961,18 +952,69 @@ class CreateChallengeView(
 
         return kwargs
 
+    def get_context_data(self, **kwargs):
+        context = {}
+        product_slug = self.kwargs.get("product_slug", None)
+        product = Product.objects.get(slug=product_slug)
+
+        expertises = []
+        context = {
+            "pk": product.pk,
+            "product": product,
+        }
+        skills = [serialize_skills(skill) for skill in Skill.get_roots()]
+
+        context["skills"] = skills
+        context["expertises"] = expertises
+
+        context["form"] = self.form_class(
+            self.request.POST, self.request.FILES
+        )
+        context["bounty_form"] = BountyForm()
+        context["empty_form"] = PersonSkillFormSet().empty_form
+
+        context["bounty_formset"] = BountyFormset(self.request.POST)
+
+        return context
+
     def post(self, request, *args, **kwargs):
+        product_slug = self.kwargs.get("product_slug", None)
+        product = Product.objects.get(slug=product_slug)
+
         form = self.form_class(request.POST, request.FILES)
+
         if form.is_valid():
-            instance = form.save(commit=False)
-            instance.created_by = request.user.person
-            instance.save()
+            challenge = form.save(commit=False)
+            challenge.product = product
+            challenge.created_by = request.user.person
+            challenge.save()
 
             if request.FILES:
                 for file in request.FILES.getlist("attachments"):
-                    instance.attachment.add(
+                    challenge.attachment.add(
                         Attachment.objects.create(file=file)
                     )
+
+            # now create the bounties
+            bounty_formset = BountyFormset(self.request.POST)
+            if bounty_formset.is_valid():
+                for bounty_form in bounty_formset:
+                    print(bounty_form.cleaned_data)
+                    bounty = bounty_form.save(commit=False)
+                    bounty.challenge = challenge
+
+                    skill_id = bounty_form.cleaned_data.get("skill_id")
+                    bounty.skill = Skill.objects.get(id=skill_id)
+                    bounty.save()
+
+                    expertise_ids = bounty_form.cleaned_data.get(
+                        "expertise_ids"
+                    )
+                    for expertise in Expertise.objects.filter(
+                        id__in=expertise_ids.split(",")
+                    ):
+                        bounty.expertise.add(expertise)
+                    bounty.save()
 
             messages.success(
                 request, _("The challenge is successfully created!")
@@ -980,8 +1022,8 @@ class CreateChallengeView(
             self.success_url = reverse(
                 "challenge_detail",
                 args=(
-                    instance.product.slug,
-                    instance.id,
+                    challenge.product.slug,
+                    challenge.id,
                 ),
             )
             return redirect(self.success_url)
@@ -1461,7 +1503,6 @@ class CreateBountyView(LoginRequiredMixin, BaseProductDetailView, CreateView):
 
             return redirect(self.success_url)
 
-        print(form.errors)
         return super().post(request, *args, **kwargs)
 
 
@@ -1485,29 +1526,18 @@ class UpdateBountyView(LoginRequiredMixin, BaseProductDetailView, UpdateView):
         )
         return context
 
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs["challenge_queryset"] = Challenge.objects.filter(
-            pk=self.kwargs.get("challenge_id")
-        )
-        return kwargs
-
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
-        challenge_queryset = Challenge.objects.filter(
-            pk=self.kwargs.get("challenge_id")
-        )
         form = self.form_class(
             request.POST,
             instance=self.object,
-            challenge_queryset=challenge_queryset,
         )
         if form.is_valid():
             return self.handle_update(request, form)
 
         return super().post(request, *args, **kwargs)
 
-    def handle_update(self, request, form):
+    def handle_update(self, request, form, challenge):
         context = self.get_context_data()
         instance = form.save(commit=False)
         skill_id = form.cleaned_data.get("selected_skill_ids")[0]
@@ -1632,11 +1662,15 @@ class DashboardReviewWorkView(LoginRequiredMixin, ListView):
     login_url = "sign_in"
 
 
-class DashboardProductContributorAgreementTemplateView(LoginRequiredMixin, ListView):
+class DashboardProductContributorAgreementTemplateView(
+    LoginRequiredMixin, ListView
+):
     model = ProductContributorAgreementTemplate
     context_object_name = "contributor_agreement_templates"
     login_url = "sign_in"
-    template_name = "product_management/dashboard/contributor_agreement_templates.html"
+    template_name = (
+        "product_management/dashboard/contributor_agreement_templates.html"
+    )
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -1657,7 +1691,9 @@ class CreateProductContributorAgreementTemplateView(
 ):
     model = ProductContributorAgreementTemplate
     form_class = ProductContributorAgreementTemplateForm
-    template_name = "product_management/create_product_contributor_agreement_template.html"
+    template_name = (
+        "product_management/create_product_contributor_agreement_template.html"
+    )
     login_url = "sign_in"
 
     def get_form_kwargs(self, *args, **kwargs):
@@ -1696,7 +1732,9 @@ class CreateProductContributorAgreementTemplateView(
 
 class ProductContributorAgreementTemplateView(DetailView):
     model = ProductContributorAgreementTemplate
-    template_name = "product_management/product_contributor_agreement_template_detail.html"
+    template_name = (
+        "product_management/product_contributor_agreement_template_detail.html"
+    )
     context_object_name = "contributor_agreement_template"
 
     def get_context_data(self, **kwargs):

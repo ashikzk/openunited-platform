@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.4/jquery-confirm.min.css">
     <link href="https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" rel="stylesheet">
+    <script src="{{ static('scripts/jquery-3.7.1.min.js') }}"></script>
 
     {% block media %}{% endblock %}
 
@@ -42,8 +43,11 @@
 
     {% block scripts %}{% endblock %}
 
+    {% block page_scripts %}
+    {% endblock %}
+
     {% include "video_player_modal.html" %}
-    
+
     </body>
 
 </html>

@@ -5,15 +5,15 @@
         {% for challenge in challenges %}
         <div class="bg-white space-y-3 p-4 rounded-lg shadow border-gray-2 border border-solid border-gray grid grid-cols-3 md:grid-cols-3 gap-4">
             <div class="col-span-full">
-                <a class="text-indigo-900 font-bold " 
+                <a class="text-indigo-900 font-bold "
                     href="{{ url('challenge_detail', args=(challenge.product.slug, challenge.id,)) }}">
                     {{ challenge.title }}
                 </a>
                 <div class="mt-1 text-gray-500">
-                    {{ challenge.short_description }} 
+                    {{ challenge.short_description }}
                 </div>
             </div>
-        
+
             <div class="flex items-center space-x-2 text-sm">
                 <div class="text-sm font-medium text-black">
                     <strong> Status </strong>
@@ -33,9 +33,9 @@
                 </div>
             </div>
 
-        
+
         </div>
         {% endfor %}
-    </div>        
-</div>    
-{% endif %}  
+    </div>
+</div>
+{% endif %}

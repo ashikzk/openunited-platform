@@ -1,10 +1,6 @@
-from django.db.models import Count, Avg
+from django.db.models import Avg, Count
 
-
-from .models import (
-    Person,
-    Feedback,
-)
+from .models import Feedback, Person
 
 
 class FeedbackService:

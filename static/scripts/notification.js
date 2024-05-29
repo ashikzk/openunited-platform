@@ -7,13 +7,13 @@ const openVideoModal = (videoLink) => {
       basic: true,
       message: `
           <div style="height: 50vh; width: 100%;">
-            <iframe style="height: 100%; width: 100%" frameborder="0" allowfullscreen src="${videoLink}"></iframe> 
+            <iframe style="height: 100%; width: 100%" frameborder="0" allowfullscreen src="${videoLink}"></iframe>
           </div>
       `,
       onshow: function () {
-          this.elements.dialog.style.maxWidth = "none"; 
+          this.elements.dialog.style.maxWidth = "none";
           this.elements.dialog.style.width = "60%";
-          this.elements.dialog.style.height = "auto"; 
+          this.elements.dialog.style.height = "auto";
       }
   }).show();
 }
@@ -58,7 +58,7 @@ const authPopUp = (event, signUpUrl, signInUrl) =>{
             Sign In or Sign Up
           </h3>
         </div>
-        <div class="sm:flex sm:items-start"> 
+        <div class="sm:flex sm:items-start">
           <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
             <div class="border-t border-gray-200 px-4 py-2">
               <p class="text-gray-800">To claim a bounty, please sign in.</p>
@@ -75,7 +75,7 @@ const authPopUp = (event, signUpUrl, signInUrl) =>{
       </div>
     `,
   }).show()
-  
+
 }
 
 
@@ -104,7 +104,7 @@ function claimConfirm(event, termConditionUrl){
           formControls.forEach(function (control) {
               if (!control.checkValidity()) {
                   control.reportValidity();
-              }   
+              }
           });
           return false;
       } else {

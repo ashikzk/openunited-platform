@@ -17,7 +17,7 @@
                     <img src="{{ person.get_photo_url() }}" class="h-full w-full object-cover object-center rounded-full"
                         alt="Profile Picture">
                 </div>
-                <div class="group absolute rounded-full bg-white py-0.5 px-2 right-2 bottom-10 border border-solid border-green-600 
+                <div class="group absolute rounded-full bg-white py-0.5 px-2 right-2 bottom-10 border border-solid border-green-600
                         inline-flex shadow-xl text-green-600 text-lg flex shrink-0 items-center justify-center cursor-pointer">
                     {{ status.name }}
                     <div
@@ -46,7 +46,7 @@
                 <div class="pb-4 font-light text-xl text-[#6b7280]">@{{ user.username }}</div>
                 {#
                 <div
-                    class="py-1.5 px-3 flex items-center justify-center text-center mb-4 w-full 
+                    class="py-1.5 px-3 flex items-center justify-center text-center mb-4 w-full
                             border border-solid border-blue-400 text-sm rounded-md bg-blue-400/[0.1] hover:bg-blue-400/[0.2] transition-all cursor-pointer text-blue-500">
                     Contact {{ person.get_short_name() }}
                 </div>
@@ -98,7 +98,7 @@
             {% if not request.user.is_authenticated %}
                 <a href="{{ url('sign-up') }}">
                     <button type="button"
-                        class="ml-auto py-1.5 px-3 flex items-center justify-center text-center mb-4 w-full max-w-[200px] 
+                        class="ml-auto py-1.5 px-3 flex items-center justify-center text-center mb-4 w-full max-w-[200px]
                                 border border-solid border-blue-400 text-sm rounded-md bg-blue-400/[0.1] hover:bg-blue-400/[0.2] transition-all cursor-pointer text-blue-500">
                         Create a Portfolio like this
                     </button>
@@ -118,7 +118,7 @@
                     {% for person_skill in person_skills %}
                         <strong> {{person_skill.skill.name}} </strong>
                         <div class="text-gray-500 flex flex-wrap">
-  
+
                             {% for expertise in  person_skill.expertise.all()  %}
                             <div class="inline-block mt-1.5 mr-1.5 mb-1.5 py-1 px-2 rounded-[100px] bg-gray-50 text-gray-900 transition-all hover:bg-gray-50/[0.1] border border-solid border-[#e4e8f1]">
                                 <div class="flex items-center text-xs font-semibold leading-6">
@@ -127,7 +127,7 @@
                                     {{ expertise }}
                                 </div>
                             </div>
-                        {% endfor %}  
+                        {% endfor %}
                         </div>
                     {% endfor %}
 
@@ -144,12 +144,12 @@
                 <div class="overflow-x-auto pb-4 table-products-contribute">
                     <div class="w-full min-w-[660px] flex flex-col">
                         <div class="grid grid-cols-12 gap-1">
-                            <div class="col-span-4 bg-gray-50 border-b border-solid border-[#e4e8f1] 
+                            <div class="col-span-4 bg-gray-50 border-b border-solid border-[#e4e8f1]
                 py-2.5 px-2 text-gray-900 text-xs font-semibold flex items-center justify-center text-center">Product
                             </div>
-                            <div class="col-span-6 bg-gray-50 border-b border-solid border-[#e4e8f1] py-1 px-2 
+                            <div class="col-span-6 bg-gray-50 border-b border-solid border-[#e4e8f1] py-1 px-2
                 text-gray-900 text-xs font-semibold flex items-center justify-center text-center">Challenges</div>
-                            <div class="col-span-2 bg-gray-50 border-b border-solid border-[#e4e8f1] py-1 px-2 
+                            <div class="col-span-2 bg-gray-50 border-b border-solid border-[#e4e8f1] py-1 px-2
                 text-gray-900 text-xs font-semibold flex items-center justify-center text-center">Points Earned</div>
                         </div>
 
@@ -237,7 +237,7 @@
                     <div class="mt-9">
                         <button type="submit" hx-get="{{ url('create-feedback') }}" hx-target="#feedback-modal"
                             hx-swap="innerHTML"
-                            class="mx-auto py-1.5 px-3 flex items-center justify-center text-center mb-4 w-full max-w-[200px] 
+                            class="mx-auto py-1.5 px-3 flex items-center justify-center text-center mb-4 w-full max-w-[200px]
                         border border-solid border-blue-400 text-sm rounded-md bg-blue-400/[0.1] hover:bg-blue-400/[0.2] transition-all cursor-pointer text-blue-500">
                             Leave a Feedback to {{ person.get_short_name() }}
                         </button>

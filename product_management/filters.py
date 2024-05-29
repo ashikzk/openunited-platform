@@ -1,9 +1,10 @@
-from django import template, forms
-from security.models import ProductRoleAssignment
+from django import forms, template
+from django.urls import reverse_lazy
 
 import django_filters
-from product_management.models import Challenge, Bounty, Skill, Expertise
-from django.urls import reverse_lazy
+
+from product_management.models import Bounty, Challenge, Expertise, Skill
+from security.models import ProductRoleAssignment
 
 register = template.Library()
 

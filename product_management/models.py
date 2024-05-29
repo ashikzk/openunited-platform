@@ -1,19 +1,20 @@
 import uuid
+
 from django.conf import settings
-from django.db import models
-from django.urls import reverse
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
-from model_utils import FieldTracker
+from django.db import models
+from django.db.models.signals import post_save, pre_save
+from django.dispatch import receiver
+from django.urls import reverse
 from django.utils.text import slugify
+
+from model_utils import FieldTracker
 from treebeard.mp_tree import MP_Node
 
 from openunited.mixins import TimeStampMixin, UUIDMixin
 from product_management.mixins import ProductMixin
-from talent.models import Person, Skill, Expertise
-from django.db.models.signals import pre_save
+from talent.models import Expertise, Person, Skill
 
 
 class Tag(TimeStampMixin):
@@ -438,7 +439,6 @@ class Bounty(TimeStampMixin):
 
     @receiver(pre_save, sender="product_management.Bounty")
     def _pre_save(sender, instance, **kwargs):
-
         if instance.status == Bounty.BountyStatus.AVAILABLE:
             instance.claimed_by = None
 

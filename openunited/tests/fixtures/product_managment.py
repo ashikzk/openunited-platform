@@ -1,7 +1,11 @@
-import pytest, random
-from model_bakery import baker
-from product_management.models import Product, Initiative
+import random
+
 from django.apps import apps
+
+import pytest
+from model_bakery import baker
+
+from product_management.models import Initiative, Product
 
 
 @pytest.fixture(autouse=True)

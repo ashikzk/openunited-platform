@@ -1,5 +1,6 @@
-from django.urls import reverse
 from django.http import HttpResponseRedirect
+from django.urls import reverse
+
 from product_management.models import Product
 
 

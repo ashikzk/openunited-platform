@@ -1,6 +1,8 @@
+from django.contrib.auth.hashers import make_password
+
 import pytest
 from model_bakery import baker
-from django.contrib.auth.hashers import make_password
+
 from security.models import ProductRoleAssignment
 
 

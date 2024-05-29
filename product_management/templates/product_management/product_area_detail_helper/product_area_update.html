@@ -3,13 +3,13 @@
     <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
         {% for field in form %}
             <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2">{{field.label}} 
+                <label class="block text-gray-700 text-sm font-bold mb-2">{{field.label}}
                     {% if field.field.required %}
                         <span style="color: red;" class="required">*</span>
                     {% endif %}
                 </label>
 
-            
+
                 {{field}}
                 {% if field.help_text %}
                     <small style="color: grey">{{ field.help_text }}</small>
@@ -37,7 +37,7 @@
                 {% for attachment_form in attachment_formset %}
                     {% set outer_index = loop.index0 %}
                     <tr id="attachment-{{ attachment_form.instance.pk }}" class="border-b border-gray-200">
-                        
+
                         {% for attachment_field in  attachment_form %}
                                 {% if  attachment_field.is_hidden %}
                                     {{ attachment_field }}
@@ -49,8 +49,8 @@
                                         </button>
                                     </td>
 
-                                    
-                                    
+
+
                                 {% elif attachment_field.name == "file" %}
                                     <td class="py-2 w-2/5">
                                         <a class="hover:underline" href="{{ attachment_form.instance.file.url }}">{{ attachment_form.instance.file.name }}</a>
@@ -60,9 +60,9 @@
                                             {{ attachment_field }}
                                     </td>
                                 {% endif %}
-                                
+
                         {% endfor %}
-                            
+
                         </td>
                     </tr>
                 {% endfor %}
@@ -71,7 +71,7 @@
         </table>
         <br>
         <div class="w-full py-3 px-6 text-right">
-            <button hx-get="{{ url('product_area_update', args=(product_slug, form.instance.pk,)) }}" 
+            <button hx-get="{{ url('product_area_update', args=(product_slug, form.instance.pk,)) }}"
                     hx-target="#tbody-container"
                     class="bg-gray-700 text-white py-2 px-4 rounded focus:outline-none"
                     hx-swap="beforeend"
@@ -100,14 +100,14 @@
             anchorTag.setAttribute("target", "_blank");
         });
     })
-    
+
     function checkCheckbox(index) {
         var checkboxId = `id_attachments-${index}-DELETE`;
         var checkbox = document.getElementById(checkboxId);
         checkbox.closest('tr').style.display="none";
         checkbox.checked = true;
     }
-    
+
     document.addEventListener('htmx:afterSwap', function(event) {
         const tbodyContainer = document.getElementById("tbody-container")
         if (tbodyContainer) {
@@ -122,7 +122,7 @@
             total_form_count.value = parseInt(total_form_count.value) + 1
         }
     });
-    
+
     function removeClosestRow(button) {
         button.closest("tr").remove()
       }

@@ -1,44 +1,28 @@
 import json
 from typing import Any
-from django.shortcuts import render, HttpResponse
-from django.contrib.auth import get_user_model
-from django.db.models import Q
-from django.shortcuts import get_object_or_404
-from django.http import (
-    Http404,
-    HttpResponse,
-    JsonResponse,
-    HttpResponseRedirect,
-)
+
 from django.contrib import messages
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Q
+from django.http import Http404, HttpResponse, HttpResponseRedirect, JsonResponse
+from django.shortcuts import HttpResponse, get_object_or_404, render
+from django.urls import reverse, reverse_lazy
+from django.utils.translation import gettext_lazy as _
 from django.views.generic.base import TemplateView
 from django.views.generic.detail import DetailView
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.urls import reverse, reverse_lazy
-from django.contrib.auth.decorators import login_required
-from django.core.exceptions import ObjectDoesNotExist
-from django.utils.translation import gettext_lazy as _
-from utility import utils as global_utils
-from talent import utils
-from .models import (
-    Person,
-    Skill,
-    Expertise,
-    PersonSkill,
-    BountyClaim,
-    Feedback,
-    BountyDeliveryAttempt,
-)
-from product_management.models import Product, Challenge, Bounty
-from .forms import (
-    PersonProfileForm,
-    FeedbackForm,
-    BountyDeliveryAttemptForm,
-    PersonSkillFormSet,
-)
-from .services import FeedbackService
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
+
+from product_management.models import Bounty, Challenge, Product
 from security.models import ProductRoleAssignment
+from talent import utils
+from utility import utils as global_utils
+
+from .forms import BountyDeliveryAttemptForm, FeedbackForm, PersonProfileForm, PersonSkillFormSet
+from .models import BountyClaim, BountyDeliveryAttempt, Expertise, Feedback, Person, PersonSkill, Skill
+from .services import FeedbackService
 
 
 class UpdateProfileView(LoginRequiredMixin, UpdateView):
@@ -148,42 +132,25 @@ def get_current_skills(request):
     return JsonResponse(skill_ids, safe=False)
 
 
-@login_required(login_url="sign_in")
-def get_expertise(request):
-    # TODO I don't think we need this
+class GetExpertiseView(LoginRequiredMixin, TemplateView):
+    model = Expertise
+    context_object_name = "expertise"
+    template_name = "talent/partials/partial_expertises.html"
+    login_url = "sign_in"
 
-    selected_skills = request.GET.get("selected_skills")
-    if selected_skills:
-        selected_skill_ids = json.loads(selected_skills)
-        expertise_queryset = Expertise.objects.filter(
-            skill_id__in=selected_skill_ids
-        ).values()
+    def get_context_data(self, **kwargs):
+        context = {}
 
-        person = request.user.person
-        try:
-            person_skills = PersonSkill.objects.filter(person=person)
-            expertise_ids = []
-            for person_skill in person_skills:
-                for expertise in person_skill.expertise.all():
-                    expertise_ids.append(expertise.id)
-        except (ObjectDoesNotExist, AttributeError):
-            expertise_ids = []
+        expertises = []
+        skills = [utils.serialize_skills(skill) for skill in Skill.get_roots()]
+        skill = self.request.GET.get("skill")
+        expertises = [
+            utils.serialize_expertise(expertise)
+            for expertise in Expertise.get_roots().filter(skill=skill)
+        ]
+        context["expertises"] = expertises
 
-        return JsonResponse(
-            {
-                "expertiseList": list(expertise_queryset),
-                "expertiseIDList": expertise_ids,
-            },
-            safe=False,
-        )
-
-    return JsonResponse(
-        {
-            "expertiseList": [],
-            "expertiseIDList": [],
-        },
-        safe=False,
-    )
+        return context
 
 
 @login_required(login_url="sign_in")

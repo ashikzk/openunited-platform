@@ -1,11 +1,12 @@
 import uuid
-from django.db import models
-from openunited.mixins import TimeStampMixin, UUIDMixin
+
 from django.contrib.contenttypes.fields import GenericRelation
 from django.core.validators import RegexValidator
+from django.db import models
 
 from openunited.mixins import TimeStampMixin, UUIDMixin
 from product_management.models import Product
+
 from .utils import *
 
 

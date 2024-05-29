@@ -1,4 +1,5 @@
 import os
+
 from openunited.settings.base import *
 
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")

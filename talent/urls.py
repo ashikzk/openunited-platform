@@ -1,19 +1,19 @@
 from django.urls import path
 
 from .views import (
-    UpdateProfileView,
-    get_skills,
-    get_current_skills,
-    get_expertise,
-    get_current_expertise,
-    list_skill_and_expertise,
-    TalentPortfolio,
-    status_and_points,
-    CreateFeedbackView,
-    UpdateFeedbackView,
-    DeleteFeedbackView,
-    CreateBountyDeliveryAttemptView,
     BountyDeliveryAttemptDetail,
+    CreateBountyDeliveryAttemptView,
+    CreateFeedbackView,
+    DeleteFeedbackView,
+    GetExpertiseView,
+    TalentPortfolio,
+    UpdateFeedbackView,
+    UpdateProfileView,
+    get_current_expertise,
+    get_current_skills,
+    get_skills,
+    list_skill_and_expertise,
+    status_and_points,
 )
 
 urlpatterns = [
@@ -23,7 +23,7 @@ urlpatterns = [
     path("profile/<int:pk>/", UpdateProfileView.as_view(), name="profile"),
     path("get-skills/", get_skills, name="get_skills"),
     path("get-current-skills/", get_current_skills, name="get_current_skills"),
-    path("get-expertise/", get_expertise, name="get_expertise"),
+    path("get-expertise/", GetExpertiseView.as_view(), name="get_expertise"),
     path(
         "get-current-expertise/",
         get_current_expertise,

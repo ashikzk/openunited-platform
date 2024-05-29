@@ -10,7 +10,7 @@
                 <button onclick="deleteSkill(event, {{loop.index0}})" class="mb-2 absolute top-0.5 right-1 text-gray-500 hover:text-gray-700 focus:outline-none" id="close-btn-{{ person_skill_form.instance.pk }}">
                     <i class="fa-solid fa-trash-can text-gray-500"></i>
                 </button>
-                
+
                 <div class="mt-2">
                     <select id="id_skills-{{ loop.index0 }}-skill" hx-get="{{ url('profile', args=(pk,)) }}" hx-vals='{"index":"{{ loop.index0 }}"}'
                             name="skills-{{ loop.index0 }}-skill" hx-trigger="change" hx-target="#ul_expertise_{{ loop.index0 }}"
@@ -34,10 +34,10 @@
                     {% endif %}
                 </div>
             </div>
-            
+
         {% endfor %}
     </div>
-    
+
     <br>
 
     <div class="w-full mb-4 text-left">
@@ -63,7 +63,7 @@ function deleteSkill(event, index){
 document.addEventListener("htmx:confirm", function(event) {
     if (event.target.id== "add_more_button") {
         event.preventDefault()
-        var index = document.getElementById("person_skill_container").querySelectorAll('.row').length 
+        var index = document.getElementById("person_skill_container").querySelectorAll('.row').length
         const data = {
             "empty_form": true,
             "index": index,

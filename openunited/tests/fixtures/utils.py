@@ -1,7 +1,9 @@
 import random
 import string
-import pytest
+
 from django.contrib.contenttypes.models import ContentType
+
+import pytest
 from model_bakery import baker
 
 

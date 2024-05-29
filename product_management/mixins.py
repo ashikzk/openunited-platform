@@ -1,13 +1,10 @@
-from django_lifecycle import (
-    LifecycleModelMixin,
-    hook,
-    BEFORE_CREATE,
-    BEFORE_SAVE,
-)
 from django.db import models
 from django.urls import reverse
-from openunited.mixins import TimeStampMixin, UUIDMixin
 from django.utils.text import slugify
+
+from django_lifecycle import BEFORE_CREATE, BEFORE_SAVE, LifecycleModelMixin, hook
+
+from openunited.mixins import TimeStampMixin, UUIDMixin
 
 
 class ProductMixin(LifecycleModelMixin, TimeStampMixin, UUIDMixin):

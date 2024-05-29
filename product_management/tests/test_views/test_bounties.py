@@ -1,5 +1,6 @@
 from django.urls import reverse
-from product_management.models import Challenge, Bounty
+
+from product_management.models import Bounty, Challenge
 
 
 def test_bounties(client, auth_user, bounties, skills, expertise_list):

@@ -1,5 +1,5 @@
-from django.db.models import Q
 from django.contrib.auth.models import UserManager
+from django.db.models import Q
 
 
 class UserManager(UserManager):

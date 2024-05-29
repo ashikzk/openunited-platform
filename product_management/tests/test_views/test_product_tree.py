@@ -1,5 +1,9 @@
-import pytest, json
+import json
+
 from django.urls import reverse
+
+import pytest
+
 from product_management.models import ProductArea
 
 

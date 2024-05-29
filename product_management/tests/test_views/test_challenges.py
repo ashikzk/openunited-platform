@@ -1,5 +1,6 @@
 from django.urls import reverse
-from product_management.models import Product, Challenge
+
+from product_management.models import Challenge, Product
 
 
 def test_dashboard_product_challenges(client, auth_user, challenges):

@@ -1,26 +1,22 @@
-import logging
 import datetime
+import logging
+
 from django.db import transaction
 from django.db.models import Sum
 
-from commerce.utils import (
-    CurrencyTypes,
-    PaymentTypes,
-    PaymentStatusOptions,
-    LifecycleStatusOptions,
-)
+from commerce.utils import CurrencyTypes, LifecycleStatusOptions, PaymentStatusOptions, PaymentTypes
+
 from .models import (
+    Cart,
+    InboundPayment,
     Organisation,
     OrganisationAccount,
     OrganisationAccountCredit,
     OrganisationAccountCreditReasons,
-    PointTypes,
-    Cart,
     PointPriceConfiguration,
+    PointTypes,
     SalesOrder,
-    InboundPayment,
 )
-
 
 logger = logging.getLogger(__name__)
 

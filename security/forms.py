@@ -1,10 +1,11 @@
 from django import forms
-from django.utils.translation import gettext_lazy as _
-from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.forms import PasswordResetForm, SetPasswordForm
+from django.contrib.auth.password_validation import validate_password
+from django.utils.translation import gettext_lazy as _
+
+from security.models import SignUpRequest
 
 from .models import User
-from security.models import SignUpRequest
 
 
 class SignUpStepOneForm(forms.Form):

@@ -1,6 +1,7 @@
-import uuid
-from django.db import models
 import json
+import uuid
+
+from django.db import models
 
 
 class TimeStampMixin(models.Model):

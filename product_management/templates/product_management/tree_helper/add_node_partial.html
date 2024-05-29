@@ -12,15 +12,15 @@
                 <a href="{{ url('product_area_update', args=(product_slug, product_area.id,)) }}">
                     <a class="flex justify-between" href="{{ url('product_area_update', args=(product_slug, product_area.id,)) }}">
                         <span class="w-full">
-                            {% include "product_management/tree_helper/drag.html" %} {{ product_area.name }} 
+                            {% include "product_management/tree_helper/drag.html" %} {{ product_area.name }}
 
-           
+
                         </span>
                         {% with child=product_area %}
                         {% include "product_management/tree_helper/video.html" %}
                     {% endwith %}
-                    </a> 
-                </a> 
+                    </a>
+                </a>
             </div>
             {% with id=product_area.id %}
                 {% include "product_management/tree_helper/action_buttons.html" %}

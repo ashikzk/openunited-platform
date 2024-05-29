@@ -1,5 +1,5 @@
 from openunited.tests.conftest import *
-from product_management.models import Challenge, Bounty
+from product_management.models import Bounty, Challenge
 
 
 @pytest.fixture

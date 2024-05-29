@@ -1,7 +1,8 @@
-import pytest
 from django.contrib.auth.hashers import make_password
-from model_bakery import baker
 from django.contrib.contenttypes.models import ContentType
+
+import pytest
+from model_bakery import baker
 
 
 @pytest.fixture(autouse=True)

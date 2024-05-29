@@ -33,12 +33,12 @@
         }
     }
 
-    function drop(event) {     
+    function drop(event) {
         var data = event.dataTransfer.getData("text");
         var draggedElement = document.getElementById(data)
         var targetElement = event.target.closest("li")
         var existingUl = targetElement.querySelector("ul");
-        var parentUl = targetElement.closest("ul"); 
+        var parentUl = targetElement.closest("ul");
 
         var parentClass = parentUl.className;
 
@@ -73,10 +73,10 @@
     var searchEmptyElement = document.querySelector(".search_empty");
     var treeContainer = document.getElementById("product_tree");
     var treeNodes = treeContainer.querySelectorAll("li");
-    
+
     searchField.addEventListener('input', (e) => {
         var searchTerm = e.currentTarget.value.trim().toLowerCase();
-    
+
         if (searchTerm === "") {
         searchEmptyElement.classList.add("hidden");
         treeNodes.forEach(function(node) {
@@ -93,7 +93,7 @@
             node.classList.add("hidden");
             }
         });
-    
+
         if (!foundMatch) {
             searchEmptyElement.classList.remove("hidden");
         } else {

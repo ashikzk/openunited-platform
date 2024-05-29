@@ -12,7 +12,7 @@
                 {% with id="id_status_mobile" %}
                     {% include "product_management/bounty/helper/filters/status.html" %}
                 {% endwith %}
-    
+
                 {% with id="id_skill_mobile" %}
                     {% include "product_management/bounty/helper/filters/skill.html" %}
                 {% endwith %}
@@ -52,7 +52,7 @@
             }
         }
     });
-    
+
     document.getElementById("id_skill_mobile").addEventListener("change", function(event) {
         const data = {
             target: "skill",
@@ -64,12 +64,12 @@
     });
 
     function openModal(event) {
-        event.preventDefault(); 
+        event.preventDefault();
         document.getElementById('search_modal').classList.remove('hidden');
     }
 
     function closeModal() {
-        event.preventDefault(); 
+        event.preventDefault();
         document.getElementById('search_modal').classList.add('hidden');
     }
 </script>

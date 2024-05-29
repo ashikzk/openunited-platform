@@ -1,10 +1,13 @@
-from e2e.pages.login_page import LoginPage
-from e2e.base import BaseE2ETest
+import random
 
-import pytest, random
-from model_bakery import baker
-from product_management.models import Product, Initiative
 from django.apps import apps
+
+import pytest
+from model_bakery import baker
+
+from e2e.base import BaseE2ETest
+from e2e.pages.login_page import LoginPage
+from product_management.models import Initiative, Product
 
 
 class TestLogin(BaseE2ETest):

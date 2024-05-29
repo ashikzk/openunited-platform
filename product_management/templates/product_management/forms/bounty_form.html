@@ -30,14 +30,6 @@
                     </div>
                 </div>
 
-                <div class="col-span-4">
-                    <label for="{{ form.challenge.id_for_label }}"
-                        class="block text-sm font-medium leading-6 text-gray-900">{{ form.challenge.label }}</label>
-                    <div class="mt-2">
-                        {{ form.challenge }}
-                    </div>
-                </div>
-
                 <div class="col-span-full">
                     <label for="{{ form.description.id_for_label }}"
                         class="block text-sm font-medium leading-6 text-gray-900">{{ form.description.label }}</label>
@@ -62,7 +54,7 @@
                         with
                         tasks.
                     </div>
-                    <div class="mt-3">
+                    <!-- <div class="mt-3">
                         <div class="treeselect-skills focus-visible:outline-transparent">
                             {{ form.selected_skill_ids }}
                         </div>
@@ -74,11 +66,11 @@
                             {% endfor %}
                         </div>
                         {% endif %}
-                    </div>
+                    </div> -->
                 </div>
                 <div class="col-span-full mt-6">
                     <label class="text-lg text-black/[0.85] inline-flex font-semibold">Expertise</label>
-                    <div class="text-sm">For each Skill selected in the previous step, please select your related
+                    <!-- <div class="text-sm">For each Skill selected in the previous step, please select your related
                         expertise.
                     </div>
                     {{ form.selected_expertise_ids }}
@@ -93,7 +85,7 @@
                             {% endfor %}
                         </div>
                         {% endif %}
-                    </div>
+                    </div> -->
                 </div>
 
                 <div class="col-span-4">

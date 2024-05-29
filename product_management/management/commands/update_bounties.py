@@ -1,4 +1,5 @@
 from django.core.management.base import BaseCommand
+
 from product_management.models import Bounty
 from talent.models import BountyClaim
 
